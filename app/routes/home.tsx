@@ -15,7 +15,7 @@ export async function clientAction({ request }: Route.ActionArgs) {
   if (isValidIPAddress(ip)) {
     return await fetchGeoLocation(ip);
   } else {
-    return data({ error: "Invalid IP Address" }, { status: 400 });
+    return { ok: false, error: "Invalid IP Address" };
   }
 }
 

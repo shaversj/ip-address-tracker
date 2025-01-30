@@ -10,18 +10,20 @@ export function Tracker() {
   const sampleData = ["192.212.174.101", "Brooklyn, NY 10001", "UTC -05:00", "SpaceX Starlink"];
 
   let fetcher = useFetcher();
-  let errors = fetcher.data?.errors;
+  let error = fetcher.data?.error;
 
   return (
     <main className={"w-[1440px]"}>
       <header className={"flex h-[280px] flex-col items-center bg-[url('./assets/pattern-bg-desktop.png')] bg-no-repeat"}>
         <h1 className={"pt-[26px] text-heading-lg text-white lg:pt-[33px]"}>IP Address Tracker</h1>
-        <fetcher.Form id={"ipForm"} method="post" className={"flex pt-[29px] lg:pt-[31px]"}>
-          <input type={"text"} name={"ipAddress"} className={"h-[58px] w-[497px] rounded-l-[15px] pl-6 text-[18px] text-very-dark-gray outline-none placeholder:text-opacity-50"} placeholder={"Search for any IP address or domain"} />
-          <button type={"submit"} className={"grid size-[58px] place-items-center rounded-r-[15px] bg-black"}>
-            <img src={iconArrow} alt={"arrow"} />
-          </button>
-          {errors && <p className={"text-red-500"}>{errors.ipValidationErrors}</p>}
+        <fetcher.Form id={"ipForm"} method="post" className={"flex flex-col pt-[29px] lg:pt-[31px]"}>
+          <div className={"flex"}>
+            <input type={"text"} name={"ipAddress"} className={"h-[58px] w-[497px] rounded-l-[15px] pl-6 text-[18px] text-very-dark-gray outline-none placeholder:text-opacity-50"} placeholder={"Search for any IP address or domain"} />
+            <button type={"submit"} className={"grid size-[58px] place-items-center rounded-r-[15px] bg-black"}>
+              <img src={iconArrow} alt={"arrow"} />
+            </button>
+          </div>
+          {error && <p className={"ml-2 justify-self-end pt-2 text-red-500"}>{error}</p>}
         </fetcher.Form>
       </header>
 
