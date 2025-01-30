@@ -1,11 +1,7 @@
 import iconArrow from "./assets/icon-arrow.svg";
-import { data, Form, useLoaderData } from "react-router";
-import { Fragment, useEffect, useState } from "react";
+import { useLoaderData } from "react-router";
+import { Fragment } from "react";
 import { useFetcher } from "react-router";
-import type { Route } from "../.react-router/types/app/+types/root";
-import type { IPAddressInfo } from "~/types/types";
-import { useSubmit } from "react-router";
-import { useCallback } from "react";
 
 export function Tracker() {
   let data = useLoaderData();
@@ -15,14 +11,6 @@ export function Tracker() {
 
   let fetcher = useFetcher();
   let errors = fetcher.data?.errors;
-
-  // useEffect(() => {
-  //   const formData = new FormData();
-  //   formData.append("ipAddress", "");
-  //   fetcher.submit(formData, { method: "post", action: "/" });
-  // }, []);
-
-  console.log("tracker_loader_data", data);
 
   return (
     <main className={"w-[1440px]"}>
@@ -41,45 +29,22 @@ export function Tracker() {
         <div className={"flex flex-col gap-y-6 lg:flex-row lg:gap-y-0"}>
           {data && (
             <>
-              <Fragment>
-                <div className={"flex items-center"}>
-                  <div className={"ml-8 w-[213px]"}>
-                    <h2 className={"justify-self-start text-data-label-sm font-bold uppercase text-dark-gray lg:text-data-label-lg"}>{dataHeaders[0]}</h2>
-                    <p className={"pt-[7px] text-heading-sm text-very-dark-gray lg:pt-[13px] lg:text-heading-lg"}>{data.ip}</p>
+              {dataHeaders.map((header, index) => (
+                <Fragment key={index}>
+                  <div className={"flex items-center"}>
+                    <div className={"ml-8 w-[213px]"}>
+                      <h2 className={"justify-self-start text-data-label-sm font-bold uppercase text-dark-gray lg:text-data-label-lg"}>{header}</h2>
+                      <p className={"pt-[7px] text-heading-sm text-very-dark-gray lg:pt-[13px] lg:text-heading-lg"}>
+                        {index === 0 && data.ip}
+                        {index === 1 && `${data.location.city}, ${data.location.region} ${data.location.postalCode}`}
+                        {index === 2 && `UTC ${data.location.timezone}`}
+                        {index === 3 && data.isp}
+                      </p>
+                    </div>
+                    {index !== dataHeaders.length - 1 && <div className={"my-[43px] ml-8 hidden h-[75px] w-[1px] bg-black opacity-15 lg:flex"}></div>}
                   </div>
-                  <div className={"my-[43px] ml-8 hidden h-[75px] w-[1px] bg-black opacity-15 lg:flex"}></div>
-                </div>
-              </Fragment>
-
-              <Fragment>
-                <div className={"flex items-center"}>
-                  <div className={"ml-8 w-[213px]"}>
-                    <h2 className={"justify-self-start text-data-label-sm font-bold uppercase text-dark-gray lg:text-data-label-lg"}>{dataHeaders[1]}</h2>
-                    <p className={"pt-[7px] text-heading-sm text-very-dark-gray lg:pt-[13px] lg:text-heading-lg"}>{`${data.location.city}, ${data.location.region} ${data.location.postalCode}`}</p>
-                  </div>
-                  <div className={"my-[43px] ml-8 hidden h-[75px] w-[1px] bg-black opacity-15 lg:flex"}></div>
-                </div>
-              </Fragment>
-
-              <Fragment>
-                <div className={"flex items-center"}>
-                  <div className={"ml-8 w-[213px]"}>
-                    <h2 className={"justify-self-start text-data-label-sm font-bold uppercase text-dark-gray lg:text-data-label-lg"}>{dataHeaders[2]}</h2>
-                    <p className={"pt-[7px] text-heading-sm text-very-dark-gray lg:pt-[13px] lg:text-heading-lg"}>{`UTC ${data.location.timezone}`}</p>
-                  </div>
-                  <div className={"my-[43px] ml-8 hidden h-[75px] w-[1px] bg-black opacity-15 lg:flex"}></div>
-                </div>
-              </Fragment>
-
-              <Fragment>
-                <div className={"flex items-center"}>
-                  <div className={"ml-8 w-[213px]"}>
-                    <h2 className={"justify-self-start text-data-label-sm font-bold uppercase text-dark-gray lg:text-data-label-lg"}>{dataHeaders[3]}</h2>
-                    <p className={"pt-[7px] text-heading-sm text-very-dark-gray lg:pt-[13px] lg:text-heading-lg"}>{data.isp}</p>
-                  </div>
-                  <div className={"my-[43px] ml-8 hidden h-[75px] w-[1px] bg-black opacity-15 lg:flex"}></div>
-                </div>
-              </Fragment>
+                </Fragment>
+              ))}
             </>
           )}
         </div>
