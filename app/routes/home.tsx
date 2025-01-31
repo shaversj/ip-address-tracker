@@ -1,6 +1,5 @@
 import type { Route } from "./+types/home";
 import { Tracker } from "~/tracker";
-import { data } from "react-router";
 import { isValidIPAddress } from "~/util/util";
 import { fetchCurrentIPAddress, fetchGeoLocation } from "~/api";
 
