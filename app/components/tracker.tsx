@@ -1,6 +1,4 @@
-import iconArrow from "../assets/icon-arrow.svg";
 import { useLoaderData } from "react-router";
-import React, { Fragment } from "react";
 import { useFetcher } from "react-router";
 import type { IPAddressInfo } from "~/types/types";
 import MapClient from "~/components/map.client";
