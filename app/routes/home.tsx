@@ -12,7 +12,10 @@ export async function clientAction({ request }: Route.ActionArgs) {
   const ip = String((await request.formData()).get("ipAddress"));
 
   if (isValidIPAddress(ip)) {
-    return await fetchGeoLocation(ip);
+    console.log("ip", ip);
+    const data = await fetchGeoLocation(ip);
+    console.log("data", data);
+    return data;
   } else {
     return { ok: false, error: "Invalid IP Address" };
   }

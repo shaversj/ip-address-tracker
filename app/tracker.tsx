@@ -2,7 +2,8 @@ import iconArrow from "./assets/icon-arrow.svg";
 import { useLoaderData } from "react-router";
 import React, { Fragment } from "react";
 import { useFetcher } from "react-router";
-import SimpleMap from "~/simplemap.client";
+import type { IPAddressInfo } from "~/types/types";
+import MapClient from "~/map.client";
 
 export function Tracker() {
   let data = useLoaderData();
@@ -11,7 +12,10 @@ export function Tracker() {
   const sampleData = ["192.212.174.101", "Brooklyn, NY 10001", "UTC -05:00", "SpaceX Starlink"];
 
   let fetcher = useFetcher();
+  let loaderData = useLoaderData();
   let error = fetcher.data?.error;
+
+  let ipGeoLocation: IPAddressInfo = fetcher.data || loaderData;
 
   return (
     <main className={"relative w-[1440px]"}>
@@ -30,7 +34,7 @@ export function Tracker() {
 
       <section className={"absolute left-1/2 z-30 -translate-x-1/2 -translate-y-1/2 transform rounded-[15px] border bg-white"}>
         <div className={"flex flex-col gap-y-6 lg:flex-row lg:gap-y-0"}>
-          {data && (
+          {ipGeoLocation && (
             <>
               {dataHeaders.map((header, index) => (
                 <Fragment key={index}>
@@ -38,10 +42,10 @@ export function Tracker() {
                     <div className={"ml-8 w-[213px]"}>
                       <h2 className={"justify-self-start text-data-label-sm font-bold uppercase text-dark-gray lg:text-data-label-lg"}>{header}</h2>
                       <p className={"pt-[7px] text-heading-sm text-very-dark-gray lg:pt-[13px] lg:text-heading-lg"}>
-                        {index === 0 && data.ip}
-                        {index === 1 && `${data.location.city}, ${data.location.region} ${data.location.postalCode}`}
-                        {index === 2 && `UTC ${data.location.timezone}`}
-                        {index === 3 && data.isp}
+                        {index === 0 && ipGeoLocation.ip}
+                        {index === 1 && `${ipGeoLocation.location.city}, ${ipGeoLocation.location.region} ${ipGeoLocation.location.postalCode}`}
+                        {index === 2 && `UTC ${ipGeoLocation.location.timezone}`}
+                        {index === 3 && ipGeoLocation.isp}
                       </p>
                     </div>
                     {index !== dataHeaders.length - 1 && <div className={"my-[43px] ml-8 hidden h-[75px] w-[1px] bg-black opacity-15 lg:flex"}></div>}
@@ -52,7 +56,7 @@ export function Tracker() {
           )}
         </div>
       </section>
-      <SimpleMap />
+      <MapClient ipGeoLocation={ipGeoLocation} />
     </main>
   );
 }
