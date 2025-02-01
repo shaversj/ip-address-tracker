@@ -2,7 +2,7 @@ import { MapContainer, Marker, Popup, TileLayer, useMap } from "react-leaflet";
 import type { LatLngExpression } from "leaflet";
 import "leaflet/dist/leaflet.css";
 import type { IPAddressInfo } from "~/types/types";
-import MapUpdater from "~/mapupdater";
+import MapUpdater from "~/components/mapupdater";
 
 export default function MapClient({ ipGeoLocation }: { ipGeoLocation: IPAddressInfo }) {
   let ipPosition: LatLngExpression = [ipGeoLocation.location.lat, ipGeoLocation.location.lng];
