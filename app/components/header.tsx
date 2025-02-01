@@ -9,12 +9,12 @@ export default function Header({ fetcher }: HeaderProps) {
   const fetcherError = fetcher.data?.error;
   const loaderData = useLoaderData();
   const loaderError = loaderData?.error;
-  const old = "flex h-[300px] flex-col items-center bg-[url('/pattern-bg-mobile.png')] bg-no-repeat px-6 md:h-[280px] md:bg-[url('/pattern-bg-desktop.png')]";
+
   return (
     <header className={"flex h-[300px] flex-col items-center px-6 md:h-[280px]"}>
       <picture className={"absolute"}>
         <source srcSet={"/pattern-bg-desktop.webp"} type="image/webp" media="(min-width: 768px)" />
-        <img src={"/pattern-bg-mobile.webp"} alt={"background"} />
+        <img src={"/pattern-bg-mobile.webp"} alt={"background"} className={"h-[300px] md:h-[280px]"} />
       </picture>
       <h1 className={"z-40 pt-[26px] text-heading-lg text-white lg:pt-[33px]"}>IP Address Tracker</h1>
       <fetcher.Form id={"ipForm"} method="post" className={"z-40 flex flex-col pt-[29px] lg:pt-[31px]"}>

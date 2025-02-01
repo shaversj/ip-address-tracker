@@ -1,5 +1,5 @@
 import type { Route } from "./+types/home";
-import { isValidIPAddress } from "~/util/util";
+import { isValidDomain, isValidIPAddress } from "~/util/util";
 import { fetchCurrentIPAddress, fetchGeoLocation } from "~/api/api";
 import { useFetcher, data } from "react-router";
 
@@ -14,7 +14,7 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
     return data({ error: `Failed to fetch IP Address. Status Code: ${ipResponse.status}` }, { status: ipResponse.status });
   }
 
-  const ip = (await ipResponse.json()).ip;
+  const ip = (await ipResponse.json()).query;
   const geoLocation = await fetchGeoLocation(ip);
 
   if (!geoLocation.ok) {
@@ -25,12 +25,12 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
 }
 
 export async function clientAction({ request }: Route.ActionArgs) {
-  const ip = String((await request.formData()).get("ipAddress"));
+  const query = String((await request.formData()).get("ipAddress"));
 
-  if (isValidIPAddress(ip)) {
-    return await fetchGeoLocation(ip);
+  if (isValidIPAddress(query) || isValidDomain(query)) {
+    return await fetchGeoLocation(query);
   } else {
-    return data({ error: "Invalid IP Address" }, { status: 400 });
+    return data({ error: "Invalid IP or Domain" }, { status: 400 });
   }
 }
 

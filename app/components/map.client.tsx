@@ -6,7 +6,7 @@ import MapUpdater from "~/components/mapupdater";
 import iconLoc from "/icon-location.svg";
 
 export default function MapClient({ ipGeoLocation }: { ipGeoLocation: IPAddressInfo }) {
-  let position: LatLngExpression = ipGeoLocation.location ? [ipGeoLocation?.location.lat, ipGeoLocation?.location.lng] : [51.505, -0.09];
+  let position: LatLngExpression = ipGeoLocation.lat ? [ipGeoLocation?.lat, ipGeoLocation?.lon] : [51.505, -0.09];
 
   const LocationIcon = Icon.extend({
     options: {
