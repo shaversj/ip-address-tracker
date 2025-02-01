@@ -1,21 +1,36 @@
 import type { Route } from "./+types/home";
-import { Tracker } from "~/components/tracker";
 import { isValidIPAddress } from "~/util/util";
 import { fetchCurrentIPAddress, fetchGeoLocation } from "~/api/api";
+import { useFetcher, data } from "react-router";
+
+import type { IPAddressInfo } from "~/types/types";
+import Header from "~/components/header";
+import IpDetails from "~/components/ipdetails";
+import MapClient from "~/components/map.client";
 
 export async function clientLoader({ params }: Route.ClientLoaderArgs) {
-  const ip = await fetchCurrentIPAddress().then((res) => res.ip);
-  return await fetchGeoLocation(ip);
+  const ipResponse = await fetchCurrentIPAddress();
+  if (!ipResponse.ok) {
+    return data({ error: `Failed to fetch IP Address. Status Code: ${ipResponse.status}` }, { status: ipResponse.status });
+  }
+
+  const ip = (await ipResponse.json()).ip;
+  const geoLocation = await fetchGeoLocation(ip);
+
+  if (!geoLocation.ok) {
+    return data({ error: `Failed to fetch Geo Location. Status Code: ${geoLocation.status}` }, { status: geoLocation.status });
+  } else {
+    return geoLocation.json();
+  }
 }
 
 export async function clientAction({ request }: Route.ActionArgs) {
   const ip = String((await request.formData()).get("ipAddress"));
 
   if (isValidIPAddress(ip)) {
-    const data = await fetchGeoLocation(ip);
-    return data;
+    return await fetchGeoLocation(ip);
   } else {
-    return { ok: false, error: "Invalid IP Address" };
+    return data({ error: "Invalid IP Address" }, { status: 400 });
   }
 }
 
@@ -24,5 +39,14 @@ export function meta({}: Route.MetaArgs) {
 }
 
 export default function Home({ actionData, loaderData }: Route.ComponentProps) {
-  return <Tracker />;
+  let fetcher = useFetcher();
+  let ipGeoLocation: IPAddressInfo = fetcher.data || loaderData;
+
+  return (
+    <main className={"relative h-[800px] xl:mx-auto lg:w-[1440px]"}>
+      <Header fetcher={fetcher} />
+      <IpDetails ipGeoLocation={ipGeoLocation} />
+      <MapClient ipGeoLocation={ipGeoLocation} />
+    </main>
+  );
 }

@@ -3,11 +3,10 @@ import type { IPAddressInfo } from "~/types/types";
 
 export default function IpDetails({ ipGeoLocation }: { ipGeoLocation: IPAddressInfo }) {
   const dataHeaders = ["IP Address", "Location", "Timezone", "ISP"];
-
   return (
-    <section className={"absolute left-1/2 z-30 -translate-x-1/2 -translate-y-1/2 transform rounded-[15px] border bg-white"}>
-      <div className={"flex flex-col gap-y-6 lg:flex-row lg:gap-y-0"}>
-        {ipGeoLocation && (
+    <section className={"absolute left-1/2 z-30 h-[294px] w-[327px] -translate-x-1/2 -translate-y-1/2 transform rounded-[15px] border bg-white pt-[20px] md:mt-[30px] lg:mt-0 lg:h-auto lg:w-auto lg:pt-0"}>
+      <div className={"flex flex-col items-center gap-y-6 lg:flex-row lg:items-baseline lg:gap-y-0"}>
+        {ipGeoLocation?.ip && (
           <>
             {dataHeaders.map((header, index) => (
               <Fragment key={index}>
