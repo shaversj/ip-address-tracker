@@ -6,7 +6,7 @@ type HeaderProps = {
 };
 
 export default function Header({ fetcher }: HeaderProps) {
-  const fetcherError = fetcher.data?.data.error;
+  const fetcherError = fetcher.data?.data?.error;
   const loaderData = useLoaderData();
   const loaderError = loaderData?.error;
 

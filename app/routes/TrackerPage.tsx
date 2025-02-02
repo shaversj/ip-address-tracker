@@ -1,5 +1,5 @@
 import type { Route } from "./+types/TrackerPage";
-import { isValidDomain, isValidIPAddress } from "~/util/util";
+import { isValidIPAddress } from "~/util/util";
 import { fetchCurrentIPAddress, fetchGeoLocation } from "~/api/api";
 import { useFetcher, data } from "react-router";
 
