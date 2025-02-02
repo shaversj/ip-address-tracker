@@ -1,4 +1,4 @@
-import type { Route } from "./+types/home";
+import type { Route } from "./+types/TrackerPage";
 import { isValidDomain, isValidIPAddress } from "~/util/util";
 import { fetchCurrentIPAddress, fetchGeoLocation } from "~/api/api";
 import { useFetcher, data } from "react-router";
@@ -38,7 +38,7 @@ export function meta({}: Route.MetaArgs) {
   return [{ title: "Ip Address Tracker" }];
 }
 
-export default function Home({ actionData, loaderData }: Route.ComponentProps) {
+export default function TrackerPage({ actionData, loaderData }: Route.ComponentProps) {
   let fetcher = useFetcher();
   let ipGeoLocation: IPAddressInfo = fetcher.data || loaderData;
 
