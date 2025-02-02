@@ -37,7 +37,7 @@ export function meta({}: Route.MetaArgs) {
 
 export default function TrackerPage({ actionData, loaderData }: Route.ComponentProps) {
   let fetcher = useFetcher();
-  let ipGeoLocation: IPAddressInfo = fetcher.data || loaderData;
+  let ipGeoLocation: IPAddressInfo = fetcher?.data?.data || loaderData;
 
   return (
     <main className={"relative h-[800px] xl:mx-auto lg:w-[1440px]"}>
