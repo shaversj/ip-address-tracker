@@ -1,5 +1,5 @@
 export async function fetchCurrentIPAddress() {
-  return await fetch("/api/myip");
+  return await fetch("https://api.myip.com");
 }
 
 export async function fetchGeoLocation(ipAddress: string) {
