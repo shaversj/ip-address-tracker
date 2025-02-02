@@ -16,15 +16,15 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
     return data({ error: `Failed to fetch IP Address.` });
   }
 
-  const ip = ipData.ip;
+  return ipData;
 
-  const geoResponse = await fetchGeoLocation(ip);
-  const geoLocation = await geoResponse.json();
-  if (!geoLocation.success) {
-    return data({ error: `Failed to fetch Geo Location. Error Type: ${geoLocation.error.type}` });
-  } else {
-    return geoLocation;
-  }
+  // const geoResponse = await fetchGeoLocation(ip);
+  // const geoLocation = await geoResponse.json();
+  // if (!geoLocation.success) {
+  //   return data({ error: `Failed to fetch Geo Location. Error Type: ${geoLocation.error.type}` });
+  // } else {
+  //   return geoLocation;
+  // }
 }
 
 export async function clientAction({ request }: Route.ActionArgs) {
@@ -51,7 +51,7 @@ export default function TrackerPage({ actionData, loaderData }: Route.ComponentP
   let fetcher = useFetcher();
   let ipGeoLocation: IPAddressInfo = fetcher.data || loaderData;
 
-  console.log("key", import.meta.env.VITE_API_ACCESS_KEY);
+  console.log("key", import.meta.env.VITE_KEY);
 
   return (
     <main className={"relative h-[800px] xl:mx-auto lg:w-[1440px]"}>
