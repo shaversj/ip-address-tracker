@@ -16,15 +16,13 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
     return data({ error: `Failed to fetch IP Address.` });
   }
 
-  return ipData;
-
-  // const geoResponse = await fetchGeoLocation(ip);
-  // const geoLocation = await geoResponse.json();
-  // if (!geoLocation.success) {
-  //   return data({ error: `Failed to fetch Geo Location. Error Type: ${geoLocation.error.type}` });
-  // } else {
-  //   return geoLocation;
-  // }
+  const geoResponse = await fetchGeoLocation(ipData.ip);
+  const geoLocation = await geoResponse.json();
+  if (!geoLocation.success) {
+    return data({ error: `Failed to fetch Geo Location. Error Type: ${geoLocation.error.type}` });
+  } else {
+    return geoLocation;
+  }
 }
 
 export async function clientAction({ request }: Route.ActionArgs) {

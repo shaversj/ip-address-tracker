@@ -5,16 +5,6 @@ import { defineConfig } from "vite";
 import tsconfigPaths from "vite-tsconfig-paths";
 
 export default defineConfig({
-  // server: {
-  //   proxy: {
-  //     "/api": {
-  //       target: "https://api.myip.com",
-  //       changeOrigin: true,
-  //       secure: false,
-  //       rewrite: (path) => path.replace(/^\/api\/myip/, ""),
-  //     },
-  //   },
-  // },
   css: {
     postcss: {
       plugins: [tailwindcss, autoprefixer],
