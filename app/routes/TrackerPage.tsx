@@ -11,14 +11,15 @@ import MapClient from "~/components/map.client";
 export async function clientLoader({ params }: Route.ClientLoaderArgs) {
   const ipResponse = await fetchCurrentIPAddress();
   const ipData = await ipResponse.json();
-  if (!ipData.success) {
-    return data({ error: `Failed to fetch IP Address. ${ipData.error.type}` });
+
+  if (!ipData.ip) {
+    return data({ error: `Failed to fetch IP Address.` });
   }
 
-  const ip = (await ipData.json()).ip;
+  const ip = ipData.ip;
+
   const geoResponse = await fetchGeoLocation(ip);
   const geoLocation = await geoResponse.json();
-
   if (!geoLocation.success) {
     return data({ error: `Failed to fetch Geo Location. Error Type: ${geoLocation.error.type}` });
   } else {
