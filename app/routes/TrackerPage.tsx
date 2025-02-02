@@ -16,28 +16,18 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
     return data({ error: `Failed to fetch IP Address.` });
   }
 
-  const geoResponse = await fetchGeoLocation(ipData.ip);
-  const geoLocation = await geoResponse.json();
-  if (!geoLocation.success) {
-    return data({ error: `Failed to fetch Geo Location. Error Type: ${geoLocation.error.type}` });
-  } else {
-    return geoLocation;
-  }
+  return ipData;
 }
 
 export async function clientAction({ request }: Route.ActionArgs) {
   const query = String((await request.formData()).get("ipAddress"));
 
-  if (isValidIPAddress(query) || isValidDomain(query)) {
+  if (isValidIPAddress(query)) {
     const response = await fetchGeoLocation(query);
-    const data = await response.json();
-    if (!data.success) {
-      return data({ error: `Failed to fetch Geo Location. Error Type: ${data.error.type}` });
-    } else {
-      return data;
-    }
+    const jsonData = await response.json();
+    return jsonData.success ? data : { error: `Failed to fetch Geo Location. ${jsonData?.message}` };
   } else {
-    return data({ error: "Invalid IP or Domain" }, { status: 400 });
+    return data({ error: "Invalid IP Address" }, { status: 400 });
   }
 }
 
@@ -48,8 +38,6 @@ export function meta({}: Route.MetaArgs) {
 export default function TrackerPage({ actionData, loaderData }: Route.ComponentProps) {
   let fetcher = useFetcher();
   let ipGeoLocation: IPAddressInfo = fetcher.data || loaderData;
-
-  console.log("key", import.meta.env.VITE_KEY);
 
   return (
     <main className={"relative h-[800px] xl:mx-auto lg:w-[1440px]"}>

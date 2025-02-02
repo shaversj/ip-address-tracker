@@ -1,6 +1,5 @@
 import React, { Fragment } from "react";
 import type { IPAddressInfo } from "~/types/types";
-import { getOffsetFromUTC } from "~/util/util";
 
 export default function IpDetails({ ipGeoLocation }: { ipGeoLocation: IPAddressInfo }) {
   const dataHeaders = ["IP Address", "Location", "Timezone", "ISP"];
@@ -17,8 +16,8 @@ export default function IpDetails({ ipGeoLocation }: { ipGeoLocation: IPAddressI
                       <h2 className={"justify-self-start text-data-label-sm font-bold uppercase text-dark-gray lg:text-data-label-lg"}>{header}</h2>
                       <p className={"pt-[7px] text-heading-sm text-very-dark-gray lg:pt-[13px] lg:text-heading-lg"}>
                         {index === 0 && ipGeoLocation.ip}
-                        {index === 1 && `${ipGeoLocation.city}, ${ipGeoLocation.region_name} ${ipGeoLocation.zip}`}
-                        {index === 2 && `UTC ${getOffsetFromUTC(ipGeoLocation.time_zone.id)}`}
+                        {index === 1 && `${ipGeoLocation.city}, ${ipGeoLocation.region} ${ipGeoLocation.postal}`}
+                        {index === 2 && `UTC ${ipGeoLocation.timezone.utc}`}
                         {index === 3 && ipGeoLocation.connection.isp}
                       </p>
                     </div>

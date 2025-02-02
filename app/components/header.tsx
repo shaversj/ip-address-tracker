@@ -6,7 +6,7 @@ type HeaderProps = {
 };
 
 export default function Header({ fetcher }: HeaderProps) {
-  const fetcherError = fetcher.data?.error;
+  const fetcherError = fetcher.data?.data.error;
   const loaderData = useLoaderData();
   const loaderError = loaderData?.error;
 
@@ -23,7 +23,7 @@ export default function Header({ fetcher }: HeaderProps) {
             type={"text"}
             name={"ipAddress"}
             className={"h-[58px] w-[269px] rounded-l-[15px] pl-6 text-[18px] text-very-dark-gray outline-none placeholder:text-[14px] placeholder:text-opacity-50 md:w-[497px] md:placeholder:text-[18px]"}
-            placeholder={"Search for any IP address or domain"}
+            placeholder={"Search for any IP address"}
           />
           <button type={"submit"} className={"grid size-[58px] place-items-center rounded-r-[15px] bg-black"}>
             <img src={iconArrow} alt={"arrow"} />
