@@ -10,17 +10,19 @@ import MapClient from "~/components/map.client";
 
 export async function clientLoader({ params }: Route.ClientLoaderArgs) {
   const ipResponse = await fetchCurrentIPAddress();
-  if (!ipResponse.ok) {
-    return data({ error: `Failed to fetch IP Address. Status Code: ${ipResponse.status}` }, { status: ipResponse.status });
+  const ipData = await ipResponse.json();
+  if (!ipData.success) {
+    return data({ error: `Failed to fetch IP Address. ${ipData.error.type}` });
   }
 
-  const ip = (await ipResponse.json()).ip;
-  const geoLocation = await fetchGeoLocation(ip);
+  const ip = (await ipData.json()).ip;
+  const geoResponse = await fetchGeoLocation(ip);
+  const geoLocation = await geoResponse.json();
 
-  if (!geoLocation.ok) {
-    return data({ error: `Failed to fetch Geo Location. Status Code: ${geoLocation.status}` }, { status: geoLocation.status });
+  if (!geoLocation.success) {
+    return data({ error: `Failed to fetch Geo Location. Error Type: ${geoLocation.error.type}` });
   } else {
-    return geoLocation.json();
+    return geoLocation;
   }
 }
 
@@ -28,7 +30,13 @@ export async function clientAction({ request }: Route.ActionArgs) {
   const query = String((await request.formData()).get("ipAddress"));
 
   if (isValidIPAddress(query) || isValidDomain(query)) {
-    return await fetchGeoLocation(query);
+    const response = await fetchGeoLocation(query);
+    const data = await response.json();
+    if (!data.success) {
+      return data({ error: `Failed to fetch Geo Location. Error Type: ${data.error.type}` });
+    } else {
+      return data;
+    }
   } else {
     return data({ error: "Invalid IP or Domain" }, { status: 400 });
   }
