@@ -42,6 +42,9 @@ export default function TrackerPage({ actionData, loaderData }: Route.ComponentP
   let fetcher = useFetcher();
   let ipGeoLocation: IPAddressInfo = fetcher.data || loaderData;
 
+  console.log("vite-variable-api-access", import.meta.env.API_ACCESS_KEY);
+  console.log("vite-api-key", import.meta.env.VITE_API_KEY);
+
   return (
     <main className={"relative h-[800px] xl:mx-auto lg:w-[1440px]"}>
       <Header fetcher={fetcher} />
