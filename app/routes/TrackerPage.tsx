@@ -14,7 +14,7 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
     return data({ error: `Failed to fetch IP Address. Status Code: ${ipResponse.status}` }, { status: ipResponse.status });
   }
 
-  const ip = (await ipResponse.json()).query;
+  const ip = (await ipResponse.json()).ip;
   const geoLocation = await fetchGeoLocation(ip);
 
   if (!geoLocation.ok) {
@@ -41,9 +41,6 @@ export function meta({}: Route.MetaArgs) {
 export default function TrackerPage({ actionData, loaderData }: Route.ComponentProps) {
   let fetcher = useFetcher();
   let ipGeoLocation: IPAddressInfo = fetcher.data || loaderData;
-
-  console.log("vite-variable-api-access", import.meta.env.API_ACCESS_KEY);
-  console.log("vite-api-key", import.meta.env.VITE_API_KEY);
 
   return (
     <main className={"relative h-[800px] xl:mx-auto lg:w-[1440px]"}>
