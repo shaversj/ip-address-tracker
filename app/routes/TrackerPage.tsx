@@ -25,7 +25,7 @@ export async function clientAction({ request }: Route.ActionArgs) {
   if (isValidIPAddress(query)) {
     const response = await fetchGeoLocation(query);
     const jsonData = await response.json();
-    return jsonData.success ? data : { error: `Failed to fetch Geo Location. ${jsonData?.message}` };
+    return jsonData.success ? jsonData : { error: `Failed to fetch Geo Location. ${jsonData?.message}` };
   } else {
     return data({ error: "Invalid IP Address" }, { status: 400 });
   }
@@ -37,7 +37,7 @@ export function meta({}: Route.MetaArgs) {
 
 export default function TrackerPage({ actionData, loaderData }: Route.ComponentProps) {
   let fetcher = useFetcher();
-  let ipGeoLocation: IPAddressInfo = fetcher?.data?.data || loaderData;
+  let ipGeoLocation: IPAddressInfo = fetcher?.data || loaderData;
 
   return (
     <main className={"relative h-[800px] xl:mx-auto lg:w-[1440px]"}>
